@@ -15,10 +15,14 @@ The main code with the user interface is in `main.py`, however, each independent
 contains a sample code.
 ## Use
 ### Main program
-First, all the files contain in the folder `/graphs` will be display by the program. Then you'll be asked to choose one,
+First, all the files contained in the folder `/graphs` will be displayed by the program. Then you'll be asked to choose one,
 If the input isn't an integer, the program will display *wrong error* then repeat the question. If the requested graph
 doesn't exist (wrong index), the program will display *Index out of range* and repeat the question.
 
-***program as requested by the teacher***
+Once a graph is selected, it is displayed as a table of edges. Then the program asks you whether you want to display the
+application of Floyd-Warshall's shortest path algorithm on the selected graph or not. Answer in the affirmative will
+detail all the steps of the algorithm, ending with the comparison of result matrices L and P and the original ones.
+
+Else way it will simply ask if you want to load another graph.
 ### Sample programs
 Samples programs are without interactions, those are juste used for demonstration.
