@@ -1,3 +1,5 @@
+import os
+import sys
 from copy import deepcopy
 from math import inf
 
@@ -12,7 +14,81 @@ class Graph:
     _edges = None
     _cyclic = False
 
+    def shortest_path(self, initial_point=None, final_point=None):
+        """
+        Compute the shortest path between all pair of vertices (allowing negative edge) with the Floyd-Warshall
+        algorithm.
+
+        It can take as input an initial and final point to compute the shortest path between those.
+
+        If no input is given, the method display all the steps of the algorithm as well as the matrices L and P (before
+        and after the process)
+        :param initial_point: initial point of the wanted path
+        :param final_point: final point of the wanted path
+        :return: either the entire L matrix or the cost of the computed path
+        """
+        # if the shortest path from a certain point is asked we do not display the process only the output
+        if (initial_point and final_point) is not None:
+            assert initial_point in self._representation.columns
+            assert final_point in self._representation.columns
+            sys.stdout = open(os.devnull, 'w')
+
+        print('Shortest path of the graph through Floyd-Warshall Algorithm')
+
+        # initialization
+        print('Initialization')
+        l = deepcopy(self._representation).applymap(lambda x: inf if x is None else x)
+        p = deepcopy(self._representation)
+        counter = 0  # steps index
+
+        def display_l_p():
+            print('\nMatrix L :')
+            print(l)
+            print('\nMatrix P :')
+            print(p)
+            print('\n')
+
+        for i in range(len(l)):
+            l[i][i] = 0
+            for j in range(len(l[i])):
+                p[i][j] = j if p[i][j] is not None else p[i][j]
+        old_l = deepcopy(l)
+        old_p = deepcopy(p)
+        display_l_p()
+
+        print('\nComputing the shortest path')
+        change = True
+        absorbent = False
+        while change and not(absorbent := (True in map(lambda x: x < 0, np.diag(l)))):
+            change = False
+            print(f'step {(counter := counter+1)}')
+            display_l_p()
+            for i in l.columns:
+                for j in l.columns:
+                    for k in l.columns:
+                        if l[j][k] > l[j][i] + l[i][k]:
+                            l[j][k] = l[j][i] + l[i][k]
+                            p[j][k] = p[i][k]
+                            change = True
+
+        print(f'Ended at step {counter} {("due to an absorbent circuit" if absorbent else "")}with :')
+        display_l_p()
+        print(f'original L matrix : \n{old_l}\n')
+        print(f'original P matrix : \n{old_p}\n')
+
+        if (initial_point and final_point) is not None:
+            sys.stdout = sys.__stdout__
+            print(f'shortest path from {initial_point} to {final_point} cost {l[final_point][initial_point]}')
+            return l[final_point][initial_point]
+
+        return l
+
     def get_transitions_target(self, input_node):
+        """
+        Return all the successors of the given node
+        :param input_node: node of the graph
+        :return: array of successors of the given node
+        """
         targets = []
         for i in self.transitions:
             if i[0] == input_node:
@@ -20,6 +96,10 @@ class Graph:
         return targets
 
     def have_cycle(self, visited=None, current_node=0):
+        """
+        Function to compute if the graph contains cycles
+        :return: boolean
+        """
         if visited is None:
             visited = []
 
@@ -39,12 +119,20 @@ class Graph:
         return False
 
     def reset(self):
+        """
+        Reset the object
+        """
         print('reset')
         self.representation = []
         self.vertices = None
         self.edges = None
 
     def load_str(self, str_graph):
+        """
+        Load a graph into the object given a string
+        :param str_graph: graph under string form
+        :return: the loaded graph
+        """
         lines = str_graph.split('\n')
 
         self.vertices = lines.pop(0)
@@ -53,7 +141,10 @@ class Graph:
         self.edges = lines.pop(0)
         assert self.edges is not None
 
-        self.representation = list(list((inf if j != i else 0) for j in range(self.vertices)) for i in range(self.vertices))
+        # self.representation = list(
+        #     list((None if j != i else 0) for j in range(self.vertices)) for i in range(self.vertices)
+        # )
+        self.representation = list(list(None for j in range(self.vertices)) for i in range(self.vertices))
 
         self.transitions = []
         for i in lines:
@@ -63,15 +154,21 @@ class Graph:
                 self.representation[self.transitions[-1][0]][self.transitions[-1][2]] = self.transitions[-1][1]
             except ValueError:
                 raise AssertionError()
-        assert not(not(len(self.transitions)))
+        assert len(self.transitions) == self.edges
 
         self.representation = DataFrame(np.array(self.representation), columns=list(i for i in range(self.vertices)))
+        return self.representation
 
     def load_file(self, filename):
+        """
+        Load a graph into the object given a file
+        :param filename: path of the graph file
+        :return: loaded graph
+        """
         with open(filename, 'r') as fileGraph:
             graph = fileGraph.read()
         # --- load file ---
-        self.load_str(graph)
+        return self.load_str(graph)
 
     @property
     def representation(self):

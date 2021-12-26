@@ -12,10 +12,10 @@ def ui():
 *--------------------------------------------------------*
 please select a graph""")
     for graph in graphs:
-        print("\t" + str(graphs.index(graph)) + " - " + graph)
+        print(f"\t{str(graphs.index(graph)+1)} - {graph}")
 
     try:
-        selected_graph = int(input())
+        selected_graph = int(input())-1
         assert len(graphs) > selected_graph >= 0
     except ValueError:
         print("wrong input")
@@ -29,7 +29,9 @@ please select a graph""")
     graph = Graph()
     graph.load_file(filename='./graphs/' + graphs[selected_graph])
     print(graph.representation)
-    print("Graph 1 is cyclic : ", graph.have_cycle())
+    print(f'Graph {selected_graph+1} {"is" if graph.have_cycle() else "isn t"} cyclic')
+    if (display := input("\nDisplay shortest path ? (y/n) : ")).lower() == 'y' or display.lower() == 'yes':
+        graph.shortest_path()
 
     if (again := input("\nload another graph ? (y/n) : ")).lower() == 'y' or again.lower() == 'yes':
         ui()
