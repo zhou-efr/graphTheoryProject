@@ -61,7 +61,7 @@ class Graph:
         absorbent = False
         while change and not(absorbent := (True in map(lambda x: x < 0, np.diag(l)))):
             change = False
-            print(f'step {(counter := counter+1)}')
+            print(f'Step {(counter := counter+1)}')
             display_l_p()
             for i in l.columns:
                 for j in l.columns:
@@ -73,12 +73,12 @@ class Graph:
 
         print(f'Ended at step {counter} {("due to an absorbent circuit" if absorbent else "")}with :')
         display_l_p()
-        print(f'original L matrix : \n{old_l}\n')
-        print(f'original P matrix : \n{old_p}\n')
+        print(f'Original L matrix : \n{old_l}\n')
+        print(f'Original P matrix : \n{old_p}\n')
 
         if (initial_point and final_point) is not None:
             sys.stdout = sys.__stdout__
-            print(f'shortest path from {initial_point} to {final_point} cost {l[final_point][initial_point]}')
+            print(f'Shortest path from {initial_point} to {final_point} cost {l[final_point][initial_point]}')
             return l[final_point][initial_point]
 
         return l
@@ -227,8 +227,13 @@ if __name__ == "__main__":
 2 2 3"""
     graph1 = Graph()
     graph1.load_str(graph1str)
+    print("*-------*")
+    print("|graph 1|")
+    print("*-------*")
     print(graph1.representation)
     print("Graph 1 is cyclic : ", graph1.have_cycle())
+    print("Floyd-Warshall's algorithm on graph 1")
+    graph1.shortest_path()
 
     graph3str = """4
 6
@@ -240,5 +245,11 @@ if __name__ == "__main__":
 2 2 3"""
     graph3 = Graph()
     graph3.load_str(graph3str)
+    print("\n*-------*")
+    print("|graph 3|")
+    print("*-------*")
     print(graph3.representation)
     print("Graph 3 is cyclic : ", graph3.have_cycle())
+    print("Shortest path from 1 to 3 in graph 3 using Floyd-Warshall's algorithm")
+    graph3.shortest_path(initial_point=1, final_point=3)
+
