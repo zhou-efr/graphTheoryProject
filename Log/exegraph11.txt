@@ -1,0 +1,105 @@
+11
+      0     1     2     3     4
+0  None  None     2     1  None
+1     1     2  None  None  None
+2  None  None  None    -2  None
+3  None  None  None  None     4
+4  None     3    -1  None  None
+Graph 11 haven t an absorbent cycle
+Shortest path of the graph through Floyd-Warshall Algorithm
+Initialization
+
+Matrix L :
+     0    1    2    3    4
+0  0.0  inf  2.0  1.0  inf
+1  1.0  0.0  inf  inf  inf
+2  inf  inf  0.0 -2.0  inf
+3  inf  inf  inf  0.0  4.0
+4  inf  3.0 -1.0  inf  0.0
+
+Matrix P :
+      0     1     2     3     4
+0  None  None     0     0  None
+1     1     1  None  None  None
+2  None  None  None     2  None
+3  None  None  None  None     3
+4  None     4     4  None  None
+
+
+
+Computing the shortest path
+Step 1
+
+Matrix L :
+     0    1    2    3    4
+0  0.0  inf  2.0  1.0  inf
+1  1.0  0.0  inf  inf  inf
+2  inf  inf  0.0 -2.0  inf
+3  inf  inf  inf  0.0  4.0
+4  inf  3.0 -1.0  inf  0.0
+
+Matrix P :
+      0     1     2     3     4
+0  None  None     0     0  None
+1     1     1  None  None  None
+2  None  None  None     2  None
+3  None  None  None  None     3
+4  None     4     4  None  None
+
+
+Step 2
+
+Matrix L :
+     0    1    2    3    4
+0  0.0  7.0  2.0  0.0  4.0
+1  1.0  0.0  3.0  1.0  5.0
+2  6.0  5.0  0.0 -2.0  2.0
+3  8.0  7.0  3.0  0.0  4.0
+4  4.0  3.0 -1.0 -3.0  0.0
+
+Matrix P :
+      0  1     2     3     4
+0  None  0     0     0     0
+1     1  1     1     1     1
+2     2  2  None     2     2
+3     3  3     3  None     3
+4     4  4     4     4  None
+
+
+Ended at step 2 with :
+
+Matrix L :
+     0    1    2    3    4
+0  0.0  7.0  2.0  0.0  4.0
+1  1.0  0.0  3.0  1.0  5.0
+2  6.0  5.0  0.0 -2.0  2.0
+3  8.0  7.0  3.0  0.0  4.0
+4  4.0  3.0 -1.0 -3.0  0.0
+
+Matrix P :
+      0  1     2     3     4
+0  None  0     0     0     0
+1     1  1     1     1     1
+2     2  2  None     2     2
+3     3  3     3  None     3
+4     4  4     4     4  None
+
+
+Original L matrix :
+     0    1    2    3    4
+0  0.0  inf  2.0  1.0  inf
+1  1.0  0.0  inf  inf  inf
+2  inf  inf  0.0 -2.0  inf
+3  inf  inf  inf  0.0  4.0
+4  inf  3.0 -1.0  inf  0.0
+
+Original P matrix :
+      0     1     2     3     4
+0  None  None     0     0  None
+1     1     1  None  None  None
+2  None  None  None     2  None
+3  None  None  None  None     3
+4  None     4     4  None  None
+
+
+load another graph ? (y/n) :
