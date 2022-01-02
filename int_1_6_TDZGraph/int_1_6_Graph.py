@@ -52,24 +52,24 @@ class Graph:
             l[i][i] = min(0, l[i][i])
             for j in range(len(l[i])):
                 p[i][j] = j if p[i][j] is not None else p[i][j]
+            p[i][i] = i
         old_l = deepcopy(l)
         old_p = deepcopy(p)
         display_l_p()
 
         print('\nComputing the shortest path')
-        change = True
+
         absorbent = False
-        while change and not(absorbent := (True in map(lambda x: x < 0, np.diag(l)))):
-            change = False
-            print(f'Step {(counter := counter+1)}')
+        while counter < len(l.columns) and not (absorbent := (True in map(lambda x: x < 0, np.diag(l)))):
+            counter = counter+1
+            print(f'Step {counter}')
+            i = list(l.columns)[counter-1]
+            for j in l.columns:
+                for k in l.columns:
+                    if l[k][j] > l[i][j] + l[k][i]:
+                        l[k][j] = l[i][j] + l[k][i]
+                        p[k][j] = p[k][i]
             display_l_p()
-            for i in l.columns:
-                for j in l.columns:
-                    for k in l.columns:
-                        if l[j][k] > l[j][i] + l[i][k]:
-                            l[j][k] = l[j][i] + l[i][k]
-                            p[j][k] = p[i][k]
-                            change = True
 
         self.cyclic = absorbent
         print(f'Ended at step {counter} {("due to an absorbent circuit" if absorbent else "")}with :')
