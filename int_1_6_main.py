@@ -5,12 +5,13 @@ from int_1_6_TDZGraph.int_1_6_Graph import Graph
 
 def ui(temp=None):
     """
-    User Interface
-    :param temp: stored int_1_6_graphs
+    User Interface (more info in the README file)
+    :param temp: stored graphs
     """
     if temp is None:
         temp = {}
-    graphs = listdir('int_1_6_graphs') + [str(i) if str(i) not in listdir('int_1_6_graphs') else None for i in temp.keys()]
+    graphs = list(filter(None, (tempGraphs := [str(i) if 'int_1_6_graph' in str(i) else None for i in listdir('./')]) +
+                         [str(i) if str(i) not in tempGraphs else None for i in temp.keys()]))
     print("""
 *--------------------------------------------------------*
 |Search for shortest paths using Floyd-Warshall algorithm|
@@ -18,11 +19,7 @@ def ui(temp=None):
 *--------------------------------------------------------*
 please select a graph (enter -1 to load a graph which isn't in the following list)""")
     for graph in graphs:
-        graph_index = graphs.index(graph)
-        if graph is None:
-            graphs.pop(graph_index)
-        else:
-            print(f"\t{str(graph_index+1)} - {graph}")
+        print(f"\t{str(graphs.index(graph)+1)} - {graph}")
 
     selected_graph: int
     try:
@@ -47,7 +44,7 @@ please select a graph (enter -1 to load a graph which isn't in the following lis
         graph = temp[graphs[selected_graph]]
     else:
         graph = Graph()
-        graph.load_file(filename='./int_1_6_graphs/' + graphs[selected_graph])
+        graph.load_file(filename='./' + graphs[selected_graph])
         temp[graphs[selected_graph]] = graph
 
     print(graph.representation)
