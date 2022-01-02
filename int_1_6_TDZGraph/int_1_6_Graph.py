@@ -61,8 +61,7 @@ class Graph:
 
         absorbent = False
         while counter < len(l.columns) and not (absorbent := (True in map(lambda x: x < 0, np.diag(l)))):
-            counter = counter+1
-            print(f'Step {counter}')
+            print(f'Step {(counter := counter+1)}')
             i = list(l.columns)[counter-1]
             for j in l.columns:
                 for k in l.columns:
