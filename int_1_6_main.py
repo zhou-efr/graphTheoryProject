@@ -1,16 +1,16 @@
 from os import listdir, path
 
-from TDZGraph.Graph import Graph
+from int_1_6_TDZGraph.int_1_6_Graph import Graph
 
 
 def ui(temp=None):
     """
     User Interface
-    :param temp: stored graphs
+    :param temp: stored int_1_6_graphs
     """
     if temp is None:
         temp = {}
-    graphs = listdir('./graphs') + [str(i) if str(i) not in listdir('./graphs') else None for i in temp.keys()]
+    graphs = listdir('int_1_6_graphs') + [str(i) if str(i) not in listdir('int_1_6_graphs') else None for i in temp.keys()]
     print("""
 *--------------------------------------------------------*
 |Search for shortest paths using Floyd-Warshall algorithm|
@@ -47,7 +47,7 @@ please select a graph (enter -1 to load a graph which isn't in the following lis
         graph = temp[graphs[selected_graph]]
     else:
         graph = Graph()
-        graph.load_file(filename='./graphs/' + graphs[selected_graph])
+        graph.load_file(filename='./int_1_6_graphs/' + graphs[selected_graph])
         temp[graphs[selected_graph]] = graph
 
     print(graph.representation)
