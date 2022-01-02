@@ -49,7 +49,7 @@ class Graph:
             print('\n')
 
         for i in range(len(l)):
-            l[i][i] = 0
+            l[i][i] = min(0, l[i][i])
             for j in range(len(l[i])):
                 p[i][j] = j if p[i][j] is not None else p[i][j]
         old_l = deepcopy(l)
@@ -71,6 +71,7 @@ class Graph:
                             p[j][k] = p[i][k]
                             change = True
 
+        self.cyclic = absorbent
         print(f'Ended at step {counter} {("due to an absorbent circuit" if absorbent else "")}with :')
         display_l_p()
         print(f'Original L matrix : \n{old_l}\n')
@@ -100,23 +101,28 @@ class Graph:
         Function to compute if the graph contains cycles
         :return: boolean
         """
-        if visited is None:
-            visited = []
 
-        visited = deepcopy(visited)
-        visited.append(current_node)
-
-        transitions_list = self.get_transitions_target(current_node)
-
-        for i in transitions_list:
-            if i in visited:
-                return True
-
-        for j in transitions_list:
-            if self.have_cycle(visited, j):
-                return True
-
-        return False
+        sys.stdout = open(os.devnull, 'w')
+        self.shortest_path()
+        sys.stdout = sys.__stdout__
+        return self.cyclic
+        # if visited is None:
+        #     visited = []
+        #
+        # visited = deepcopy(visited)
+        # visited.append(current_node)
+        #
+        # transitions_list = self.get_transitions_target(current_node)
+        #
+        # for i in transitions_list:
+        #     if i in visited:
+        #         return True
+        #
+        # for j in transitions_list:
+        #     if self.have_cycle(visited, j):
+        #         return True
+        #
+        # return False
 
     def reset(self):
         """
@@ -170,6 +176,9 @@ class Graph:
         # --- load file ---
         return self.load_str(graph)
 
+    def __str__(self):
+        return str(self._representation)
+
     @property
     def representation(self):
         return self._representation
@@ -216,7 +225,12 @@ class Graph:
     def cyclic(self):
         return self._cyclic
 
+    @cyclic.setter
+    def cyclic(self, value):
+        self._cyclic = value
 
+
+# below is a test program
 if __name__ == "__main__":
     graph1str = """4
 5
