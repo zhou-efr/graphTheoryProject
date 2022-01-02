@@ -57,8 +57,12 @@ please select a graph (enter -1 to load a graph which isn't in the following lis
     if not cyclic:
         graph.shortest_path()
 
-    if (again := input("\nload another graph ? (y/n) : ")).lower() == 'y' or again.lower() == 'yes':
-        ui(temp=temp)
+    def ask_load_graph():
+        if (again := input("\nload another graph ? (y/n) : ")).lower() == 'y' or again.lower() == 'yes':
+            ui(temp=temp)
+        elif not(again.lower() == 'n' or again.lower() == 'no'):
+            ask_load_graph()
+    ask_load_graph()
 
 
 if __name__ == "__main__":
