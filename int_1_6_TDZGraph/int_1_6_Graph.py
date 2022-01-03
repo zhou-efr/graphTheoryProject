@@ -71,14 +71,21 @@ class Graph:
             display_l_p()
 
         self.cyclic = absorbent
-        print(f'Ended at step {counter} {("due to an absorbent circuit" if absorbent else "")}with :')
+        print(f'Ended at step {counter} {("due to an absorbent circuit" if absorbent else "")} with :')
         display_l_p()
         print(f'Original L matrix : \n{old_l}\n')
         print(f'Original P matrix : \n{old_p}\n')
 
-        if (initial_point and final_point) is not None:
+        if (initial_point and final_point) is not None and not absorbent:
             sys.stdout = sys.__stdout__
-            print(f'Shortest path from {initial_point} to {final_point} cost {l[final_point][initial_point]}')
+            path = [final_point]
+            while path[-1] != initial_point and path[-1] is not None:
+                path.append(p[path[-1]][initial_point])
+            if path[-1] is not None:
+                path.reverse()
+                print(f'Shortest path from {initial_point} to {final_point} cost {l[final_point][initial_point]} through ', *path)
+            else:
+                print(f'There s no path from {initial_point} to {final_point}')
             return l[final_point][initial_point]
 
         return l
@@ -96,6 +103,25 @@ class Graph:
         return targets
 
     def have_cycle(self, visited=None, current_node=0):
+        if visited is None:
+            visited = []
+
+        visited = deepcopy(visited)
+        visited.append(current_node)
+
+        transitions_list = self.get_transitions_target(current_node)
+
+        for i in transitions_list:
+            if i in visited:
+                return True
+
+        for j in transitions_list:
+            if self.have_cycle(visited, j):
+                return True
+
+        return False
+
+    def have_absorbent_cycle(self):
         """
         Function to compute if the graph contains cycles
         :return: boolean
@@ -105,23 +131,6 @@ class Graph:
         self.shortest_path()
         sys.stdout = sys.__stdout__
         return self.cyclic
-        # if visited is None:
-        #     visited = []
-        #
-        # visited = deepcopy(visited)
-        # visited.append(current_node)
-        #
-        # transitions_list = self.get_transitions_target(current_node)
-        #
-        # for i in transitions_list:
-        #     if i in visited:
-        #         return True
-        #
-        # for j in transitions_list:
-        #     if self.have_cycle(visited, j):
-        #         return True
-        #
-        # return False
 
     def reset(self):
         """
@@ -244,7 +253,7 @@ if __name__ == "__main__":
     print("|graph 1|")
     print("*-------*")
     print(graph1.representation)
-    print("Graph 1 is cyclic : ", graph1.have_cycle())
+    print("Graph 1 is cyclic : ", graph1.have_absorbent_cycle())
     print("Floyd-Warshall's algorithm on graph 1")
     graph1.shortest_path()
 
@@ -262,7 +271,6 @@ if __name__ == "__main__":
     print("|graph 3|")
     print("*-------*")
     print(graph3.representation)
-    print("Graph 3 is cyclic : ", graph3.have_cycle())
+    print("Graph 3 is cyclic : ", graph3.have_absorbent_cycle())
     print("Shortest path from 1 to 3 in graph 3 using Floyd-Warshall's algorithm")
     graph3.shortest_path(initial_point=1, final_point=3)
-

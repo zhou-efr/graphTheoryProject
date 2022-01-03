@@ -48,11 +48,29 @@ please select a graph (enter -1 to load a graph which isn't in the following lis
         temp[graphs[selected_graph]] = graph
 
     print(graph.representation)
-    print(f'Graph {selected_graph+1} {"have" if (cyclic := graph.have_cycle()) else "haven t"} an absorbent cycle')
-    # if not cyclic and ((display := input("\nDisplay shortest path ? (y/n) : ")).lower() == 'y' or display.lower()
-    # == 'yes'):
-    if not cyclic:
+    print(f'Graph {selected_graph+1} {"have" if (cyclic := graph.have_absorbent_cycle()) else "haven t"} an absorbent cycle')
+    if (display := input("\nDisplay shortest path matrix ? (y/n) : ")).lower() == 'y' or display.lower() == 'yes':
         graph.shortest_path()
+
+    def ask_shortest_path(g):
+        if not g.cyclic and (d := input("\nDisplay a shortest path ? (y/n) : ")).lower() == 'y' or display.lower() == 'yes':
+            initial: int
+            final: int
+            try:
+                initial = int(input('Enter the initial vertex: '))
+                assert graph.vertices > initial >= 0
+                final = int(input('Enter the final vertex: '))
+                assert graph.vertices > final >= 0
+            except ValueError:
+                print("wrong input")
+                ask_shortest_path(g)
+                return
+            except AssertionError:
+                print("the vertex aren't in the graph")
+                ask_shortest_path(g)
+                return
+            graph.shortest_path(initial_point=initial, final_point=final)
+    ask_shortest_path(graph)
 
     def ask_load_graph():
         if (again := input("\nload another graph ? (y/n) : ")).lower() == 'y' or again.lower() == 'yes':
