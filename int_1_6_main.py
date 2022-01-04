@@ -10,6 +10,7 @@ def ui(temp=None):
     """
     if temp is None:
         temp = {}
+
     graphs = list(filter(None, (tempGraphs := [str(i) if 'int_1_6_graph' in str(i) else None for i in listdir('./')]) +
                          [str(i) if str(i) not in tempGraphs else None for i in temp.keys()]))
     print("""
@@ -25,18 +26,18 @@ please select a graph (enter -1 to load a graph which isn't in the following lis
     try:
         selected_graph = int(input())-1
         if selected_graph == -2:
-            graphs.append(input())
+            graphs.append(input('enter the graph path : '))
             assert path.isfile(graphs[-1])
             selected_graph = -1
         else:
             assert len(graphs) > selected_graph >= 0
     except ValueError:
         print("wrong input")
-        ui()
+        ui(temp=temp)
         return
     except AssertionError:
         print("The asked graph doesn't exist")
-        ui()
+        ui(temp=temp)
         return
 
     graph: Graph
@@ -49,11 +50,16 @@ please select a graph (enter -1 to load a graph which isn't in the following lis
 
     print(graph.representation)
     print(f'Graph {selected_graph+1} {"have" if (cyclic := graph.have_absorbent_cycle()) else "haven t"} an absorbent cycle')
-    if (display := input("\nDisplay shortest path matrix ? (y/n) : ")).lower() == 'y' or display.lower() == 'yes':
-        graph.shortest_path()
+
+    def ask_display_matrix():
+        if (display := input("\nDisplay shortest path matrix ? (y/n) : ")).lower() == 'y' or display.lower() == 'yes':
+            graph.shortest_path()
+        elif not(display.lower() == 'n' or display.lower() == 'no'):
+            ask_display_matrix()
+    ask_display_matrix()
 
     def ask_shortest_path(g):
-        if not g.cyclic and (d := input("\nDisplay a shortest path ? (y/n) : ")).lower() == 'y' or display.lower() == 'yes':
+        if not g.cyclic and (d := input("\nDisplay a shortest path ? (y/n) : ")).lower() == 'y' or d.lower() == 'yes':
             initial: int
             final: int
             try:
