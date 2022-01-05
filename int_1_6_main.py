@@ -59,7 +59,7 @@ please select a graph (enter -1 to load a graph which isn't in the following lis
     ask_display_matrix()
 
     def ask_shortest_path(g):
-        if not g.cyclic and (d := input("\nDisplay a shortest path ? (y/n) : ")).lower() == 'y' or d.lower() == 'yes':
+        if (display := input("\nDisplay a shortest path ? (y/n) : ")).lower() == 'y' or display.lower() == 'yes':
             initial: int
             final: int
             try:
@@ -76,7 +76,8 @@ please select a graph (enter -1 to load a graph which isn't in the following lis
                 ask_shortest_path(g)
                 return
             graph.shortest_path(initial_point=initial, final_point=final)
-    ask_shortest_path(graph)
+    if not graph.cyclic:
+        ask_shortest_path(graph)
 
     def ask_load_graph():
         if (again := input("\nload another graph ? (y/n) : ")).lower() == 'y' or again.lower() == 'yes':
