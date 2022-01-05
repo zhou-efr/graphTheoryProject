@@ -8,6 +8,8 @@
 5  None  None  None  None     2     0    -2
 6  None  None  None  None  None  None  None
 Graph 6 haven t an absorbent cycle
+
+Display shortest path matrix ? (y/n) : y
 Shortest path of the graph through Floyd-Warshall Algorithm
 Initialization
 
@@ -23,13 +25,13 @@ Matrix L :
 
 Matrix P :
       0     1     2     3     4     5     6
-0  None     0     0  None  None  None  None
+0     0     0     0  None  None  None  None
 1  None     1     1     1  None  None  None
-2     2     2  None     2  None  None  None
-3  None  None     3  None  None  None  None
-4  None  None  None  None  None     4  None
+2     2     2     2     2  None  None  None
+3  None  None     3     3  None  None  None
+4  None  None  None  None     4     4  None
 5  None  None  None  None     5     5     5
-6  None  None  None  None  None  None  None
+6  None  None  None  None  None  None     6
 
 
 
@@ -48,39 +50,108 @@ Matrix L :
 
 Matrix P :
       0     1     2     3     4     5     6
-0  None     0     0  None  None  None  None
+0     0     0     0  None  None  None  None
 1  None     1     1     1  None  None  None
-2     2     2  None     2  None  None  None
-3  None  None     3  None  None  None  None
-4  None  None  None  None  None     4  None
+2     2     2     2     2  None  None  None
+3  None  None     3     3  None  None  None
+4  None  None  None  None     4     4  None
 5  None  None  None  None     5     5     5
-6  None  None  None  None  None  None  None
+6  None  None  None  None  None  None     6
 
 
 Step 2
 
 Matrix L :
      0    1    2    3    4    5    6
-0  0.0 -1.0 -5.0 -2.0  inf  inf  inf
-1  4.0  0.0 -3.0  0.0  inf  inf  inf
+0  0.0  2.0 -5.0  5.0  inf  inf  inf
+1  inf  0.0 -3.0  3.0  inf  inf  inf
 2  7.0  4.0  0.0  3.0  inf  inf  inf
-3  9.0  6.0  2.0  0.0  inf  inf  inf
-4  inf  inf  inf  inf  0.0  5.0  3.0
+3  inf  inf  2.0  0.0  inf  inf  inf
+4  inf  inf  inf  inf  0.0  5.0  inf
 5  inf  inf  inf  inf  2.0  0.0 -2.0
 6  inf  inf  inf  inf  inf  inf  0.0
 
 Matrix P :
       0     1     2     3     4     5     6
-0  None     0     0     0  None  None  None
-1     1     1     1     1  None  None  None
-2     2     2  None     2  None  None  None
-3     3     3     3  None  None  None  None
-4  None  None  None  None  None     4     4
+0     0     0     0     1  None  None  None
+1  None     1     1     1  None  None  None
+2     2     2     2     2  None  None  None
+3  None  None     3     3  None  None  None
+4  None  None  None  None     4     4  None
 5  None  None  None  None     5     5     5
-6  None  None  None  None  None  None  None
+6  None  None  None  None  None  None     6
 
 
-Ended at step 2 with :
+Step 3
+
+Matrix L :
+     0    1    2    3    4    5    6
+0  0.0 -1.0 -5.0 -2.0  inf  inf  inf
+1  4.0  0.0 -3.0  0.0  inf  inf  inf
+2  7.0  4.0  0.0  3.0  inf  inf  inf
+3  9.0  6.0  2.0  0.0  inf  inf  inf
+4  inf  inf  inf  inf  0.0  5.0  inf
+5  inf  inf  inf  inf  2.0  0.0 -2.0
+6  inf  inf  inf  inf  inf  inf  0.0
+
+Matrix P :
+      0     1     2     3     4     5     6
+0     0     2     0     2  None  None  None
+1     2     1     1     2  None  None  None
+2     2     2     2     2  None  None  None
+3     2     2     3     3  None  None  None
+4  None  None  None  None     4     4  None
+5  None  None  None  None     5     5     5
+6  None  None  None  None  None  None     6
+
+
+Step 4
+
+Matrix L :
+     0    1    2    3    4    5    6
+0  0.0 -1.0 -5.0 -2.0  inf  inf  inf
+1  4.0  0.0 -3.0  0.0  inf  inf  inf
+2  7.0  4.0  0.0  3.0  inf  inf  inf
+3  9.0  6.0  2.0  0.0  inf  inf  inf
+4  inf  inf  inf  inf  0.0  5.0  inf
+5  inf  inf  inf  inf  2.0  0.0 -2.0
+6  inf  inf  inf  inf  inf  inf  0.0
+
+Matrix P :
+      0     1     2     3     4     5     6
+0     0     2     0     2  None  None  None
+1     2     1     1     2  None  None  None
+2     2     2     2     2  None  None  None
+3     2     2     3     3  None  None  None
+4  None  None  None  None     4     4  None
+5  None  None  None  None     5     5     5
+6  None  None  None  None  None  None     6
+
+
+Step 5
+
+Matrix L :
+     0    1    2    3    4    5    6
+0  0.0 -1.0 -5.0 -2.0  inf  inf  inf
+1  4.0  0.0 -3.0  0.0  inf  inf  inf
+2  7.0  4.0  0.0  3.0  inf  inf  inf
+3  9.0  6.0  2.0  0.0  inf  inf  inf
+4  inf  inf  inf  inf  0.0  5.0  inf
+5  inf  inf  inf  inf  2.0  0.0 -2.0
+6  inf  inf  inf  inf  inf  inf  0.0
+
+Matrix P :
+      0     1     2     3     4     5     6
+0     0     2     0     2  None  None  None
+1     2     1     1     2  None  None  None
+2     2     2     2     2  None  None  None
+3     2     2     3     3  None  None  None
+4  None  None  None  None     4     4  None
+5  None  None  None  None     5     5     5
+6  None  None  None  None  None  None     6
+
+
+Step 6
 
 Matrix L :
      0    1    2    3    4    5    6
@@ -94,13 +165,59 @@ Matrix L :
 
 Matrix P :
       0     1     2     3     4     5     6
-0  None     0     0     0  None  None  None
-1     1     1     1     1  None  None  None
-2     2     2  None     2  None  None  None
-3     3     3     3  None  None  None  None
-4  None  None  None  None  None     4     4
+0     0     2     0     2  None  None  None
+1     2     1     1     2  None  None  None
+2     2     2     2     2  None  None  None
+3     2     2     3     3  None  None  None
+4  None  None  None  None     4     4     5
 5  None  None  None  None     5     5     5
-6  None  None  None  None  None  None  None
+6  None  None  None  None  None  None     6
+
+
+Step 7
+
+Matrix L :
+     0    1    2    3    4    5    6
+0  0.0 -1.0 -5.0 -2.0  inf  inf  inf
+1  4.0  0.0 -3.0  0.0  inf  inf  inf
+2  7.0  4.0  0.0  3.0  inf  inf  inf
+3  9.0  6.0  2.0  0.0  inf  inf  inf
+4  inf  inf  inf  inf  0.0  5.0  3.0
+5  inf  inf  inf  inf  2.0  0.0 -2.0
+6  inf  inf  inf  inf  inf  inf  0.0
+
+Matrix P :
+      0     1     2     3     4     5     6
+0     0     2     0     2  None  None  None
+1     2     1     1     2  None  None  None
+2     2     2     2     2  None  None  None
+3     2     2     3     3  None  None  None
+4  None  None  None  None     4     4     5
+5  None  None  None  None     5     5     5
+6  None  None  None  None  None  None     6
+
+
+Ended at step 7  with :
+
+Matrix L :
+     0    1    2    3    4    5    6
+0  0.0 -1.0 -5.0 -2.0  inf  inf  inf
+1  4.0  0.0 -3.0  0.0  inf  inf  inf
+2  7.0  4.0  0.0  3.0  inf  inf  inf
+3  9.0  6.0  2.0  0.0  inf  inf  inf
+4  inf  inf  inf  inf  0.0  5.0  3.0
+5  inf  inf  inf  inf  2.0  0.0 -2.0
+6  inf  inf  inf  inf  inf  inf  0.0
+
+Matrix P :
+      0     1     2     3     4     5     6
+0     0     2     0     2  None  None  None
+1     2     1     1     2  None  None  None
+2     2     2     2     2  None  None  None
+3     2     2     3     3  None  None  None
+4  None  None  None  None     4     4     5
+5  None  None  None  None     5     5     5
+6  None  None  None  None  None  None     6
 
 
 Original L matrix :
@@ -115,13 +232,13 @@ Original L matrix :
 
 Original P matrix :
       0     1     2     3     4     5     6
-0  None     0     0  None  None  None  None
+0     0     0     0  None  None  None  None
 1  None     1     1     1  None  None  None
-2     2     2  None     2  None  None  None
-3  None  None     3  None  None  None  None
-4  None  None  None  None  None     4  None
+2     2     2     2     2  None  None  None
+3  None  None     3     3  None  None  None
+4  None  None  None  None     4     4  None
 5  None  None  None  None     5     5     5
-6  None  None  None  None  None  None  None
+6  None  None  None  None  None  None     6
 
 
-load another graph ? (y/n) :
+Display a shortest path ? (y/n) :
